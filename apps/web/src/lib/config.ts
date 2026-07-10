@@ -1,6 +1,6 @@
 export const APP_CONFIG = {
 	// App Info
-	name: 'KeyCraft',
+	name: 'KeyCraftReact',
 	description: 'Next Century Keyboard Shop - Premium mechanical keyboards and accessories',
 	version: '1.0.0',
 
