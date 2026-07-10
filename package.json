@@ -1,0 +1,38 @@
+{
+	"name": "react-shop",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"packageManager": "pnpm@11.9.0",
+	"scripts": {
+		"dev": "pnpm --parallel --filter \"./apps/*\" run dev",
+		"dev:web": "pnpm --filter web run dev",
+		"dev:api": "pnpm --filter api run dev",
+		"build": "pnpm --filter web run build && pnpm --filter api run build",
+		"start": "node scripts/docker-entrypoint.js",
+		"preview": "pnpm --filter web run preview",
+		"format": "prettier --write .",
+		"lint": "prettier --check .",
+		"health": "curl -s http://localhost:3000/api/health | jq",
+		"db": "pnpm --filter api run db",
+		"db:init": "pnpm --filter api run db:init",
+		"db:wipe": "pnpm --filter api run db:wipe",
+		"db:seed": "pnpm --filter api run db:seed",
+		"db:export": "pnpm --filter api run db:export",
+		"db:reset": "pnpm --filter api run db:reset",
+		"docker:build": "docker build -t codingfragments/react-shop:latest .",
+		"docker:build:push": "docker buildx build --platform linux/amd64,linux/arm64 -t codingfragments/react-shop:latest --push .",
+		"docker:run": "docker run -p 3000:3000 --env-file .env codingfragments/react-shop:latest",
+		"docker:dev": "docker run -p 3000:3000 --env-file .env --rm codingfragments/react-shop:latest"
+	},
+	"dependencies": {
+		"dotenv": "^17.2.2"
+	},
+	"devDependencies": {
+		"prettier": "^3.4.2",
+		"prettier-plugin-tailwindcss": "^0.6.11"
+	},
+	"volta": {
+		"node": "24.8.0"
+	}
+}

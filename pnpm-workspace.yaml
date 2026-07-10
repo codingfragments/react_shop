@@ -1,0 +1,7 @@
+packages:
+  - 'apps/*'
+
+allowBuilds:
+  better-sqlite3: true # native addon — must compile
+  core-js: false # no native compilation needed
+  esbuild: false # ships prebuilt binaries

@@ -1,0 +1,25 @@
+node_modules
+
+# Output
+apps/web/dist
+apps/api/dist
+apps/api/build
+*.tsbuildinfo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# Data
+data/db.sqlite
+data/olddb.sqllite
+apps/api/data/
