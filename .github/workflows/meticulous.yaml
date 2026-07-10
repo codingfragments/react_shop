@@ -1,0 +1,95 @@
+# Workflow for building frontend and running Meticulous tests against a container image
+
+name: Meticulous
+
+# Important: The workflow needs to run both on pushes to your main branch and on
+# pull requests. It needs to run on your main branch because it'll use the results
+# from the base commit of the PR on the main branch to compare against.
+on:
+  push:
+    branches:
+      - main
+  pull_request: {}
+  # Important: We need the workflow to be triggered on workflow_dispatch events,
+  # so that Meticulous can run the workflow on the base commit to compare
+  # against if an existing workflow hasn't run
+  workflow_dispatch: {}
+
+# Important: The workflow needs all the permissions below.
+# These permissions are mainly needed to post and update the status check and
+# feedback comment on your PR. Meticulous won't work without them.
+permissions:
+  actions: write
+  contents: read
+  issues: write
+  pull-requests: write
+  statuses: read
+
+jobs:
+  test:
+    name: Meticulous
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.9.0
+          run_install: false
+
+      - name: Use Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: pnpm
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            node-modules-${{ runner.os }}
+
+      - name: Install dependencies
+        run: |
+          pnpm install --frozen-lockfile
+
+      - name: Build project
+        # METICULOUS_BUILD marks this as a build for Meticulous testing (see note above).
+        env:
+          METICULOUS_BUILD: "true"
+        run: |
+          pnpm build
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Docker Build (no push)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          tags: my-app:${{ github.sha }}
+          push: false
+          load: true
+          # Marks the image as a Meticulous build (see note above). Consume it in your
+          # Dockerfile with `ARG METICULOUS_BUILD` / `ENV METICULOUS_BUILD=$METICULOUS_BUILD`
+          # if you need it at build time (e.g. getStaticProps / static generation).
+          build-args: |
+            METICULOUS_BUILD=true
+
+      - name: Run Meticulous tests
+        uses: alwaysmeticulous/report-diffs-action/upload-container@v1
+        with:
+          api-token: ${{ secrets.METICULOUS_API_TOKEN }}
+          image-tag: my-app:${{ github.sha }}
+          # Optional inputs:
+          container-port: 3000
+          # METICULOUS_BUILD is also passed at runtime so server-side code (e.g.
+          # getServerSideProps) can detect the Meticulous replay. See note above.
+          container-env: |
+            MY_ENV_VAR=my-value
+            METICULOUS_BUILD=true
