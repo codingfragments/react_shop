@@ -10,11 +10,11 @@ import './app.css';
 // 	defaults: '2025-05-24'
 // });
 
-const meticulousScript = document.createElement('script');
-meticulousScript.src = 'https://snippet.meticulous.ai/v1/meticulous.js';
-meticulousScript.dataset.recordingToken = 'I5tra8TunhqlEtk3JLUasCKouZUbB9gSlEBPSmiw';
-meticulousScript.dataset.isProductionEnvironment = String(import.meta.env.PROD);
-document.head.appendChild(meticulousScript);
+// const meticulousScript = document.createElement('script');
+// meticulousScript.src = 'https://snippet.meticulous.ai/v1/meticulous.js';
+// meticulousScript.dataset.recordingToken = 'I5tra8TunhqlEtk3JLUasCKouZUbB9gSlEBPSmiw';
+// meticulousScript.dataset.isProductionEnvironment = String(import.meta.env.PROD);
+// document.head.appendChild(meticulousScript);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
