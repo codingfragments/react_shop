@@ -23,6 +23,8 @@ const communityLinks: Record<string, { name: string; url: string; description: s
     { name: 'Thomas Baart', url: 'https://thomasbaart.nl', description: 'Split keyboard expert' },
     { name: 'MechMerlin', url: 'https://www.youtube.com/c/MechMerlin', description: 'Reviews & tutorials' }
   ],
+
+
   'Vendors & Brands': [
     { name: 'Drop', url: 'https://drop.com/mechanical-keyboards', description: 'Popular marketplace' },
     { name: 'KBDfans', url: 'https://kbdfans.com', description: 'Enthusiast parts' },
