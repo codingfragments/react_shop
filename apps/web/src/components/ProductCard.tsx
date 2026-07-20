@@ -225,7 +225,7 @@ export default function ProductCard({ product, size = 'md', showCategory = true 
         <div className="flex items-center justify-between">
           <div className="space-y-1">
             <p className="text-primary text-xl font-bold">{formatPrice(product.price)}</p>
-            <p className={`text-sm ${stockStatus.color}`}>REAL {stockStatus.text}</p>
+            <p className={`text-sm ${stockStatus.color}`}>REA {stockStatus.text}</p>
           </div>
 
           {/* Add to Cart */}
